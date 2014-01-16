@@ -29,6 +29,7 @@ public class MyActivity extends Activity {
         Cursor cursor = sqLiteDatabase.query(ImagesDataBaseHelper.DATABASE_NAME, null, null, null, null, null, null);
         int pathColumn = cursor.getColumnIndex(ImagesDataBaseHelper.PATH);
         arrayList.clear();
+        pairs.clear();
         while (cursor.moveToNext()) {
             arrayList.add(cursor.getString(pathColumn));
         }
