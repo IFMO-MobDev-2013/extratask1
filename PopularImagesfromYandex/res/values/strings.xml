@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Popular Images</string>
+    <string name="download_completed">Загрузка выполнена</string>
+    <string name="download_failed">Ошибка во время загрузки</string>
+    <string name="download_started">Загружаю картинки</string>
+    <string name="yes">Да</string>
+    <string name="no">Нет</string>
+    <string name="warning">Вы уверены?</string>
+    <string name="message">После нажатия на кнопку Да, загруженные ранее картинки удалятся.</string>
+    <string name="error">Ошибка</string>
+</resources>
