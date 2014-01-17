@@ -12,53 +12,37 @@ import java.util.List;
 
 public class ImageAdapter extends BaseAdapter {
     private Context mContext;
-    private List<Bitmap> bitmaps;
+    private List<Bitmap> bm;
     private int width;
-    private int height;
-    private int paddings;
 
-    public ImageAdapter(Context c, List<Bitmap> bitmaps, int width, int height, int paddings) {
+    public ImageAdapter(Context c, List<Bitmap> bm, int width) {
         mContext = c;
-        this.bitmaps = bitmaps;
+        this.bm = bm;
         this.width = width;
-        this.height = height;
-        this.paddings = paddings;
     }
 
     @Override
     public int getCount() {
-        if (bitmaps == null) {
-            return 0;
-        }
-        return bitmaps.size();
+        return bm.size();
     }
 
     @Override
-    public Object getItem(int i) {
-        if (bitmaps == null) {
-            return null;
-        }
-        return bitmaps.get(i);
+    public Bitmap getItem(int position) {
+        return bm.get(position);
     }
 
     @Override
-    public long getItemId(int i) {
-        return i;
+    public long getItemId(int position) {
+        return 0;
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        ImageView imageView;
-        if (convertView == null) {
-            imageView = new ImageView(mContext);
-            imageView.setLayoutParams(new GridView.LayoutParams(width, height));
-            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            imageView.setPadding(paddings, paddings, paddings, paddings);
-        } else {
-            imageView = (ImageView) convertView;
-        }
-
-        imageView.setImageBitmap(bitmaps.get(position));
+        ImageView imageView = new ImageView(mContext);
+        imageView.setImageBitmap(bm.get(position));
+        imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        imageView.setLayoutParams(new GridView.LayoutParams((int) (0.35 * width), (int) (0.35 * width)));
+        //imageView.setPadding(5,5,5,5);
         return imageView;
     }
 }
