@@ -3,12 +3,12 @@ package com.ctd.Images;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.*;
+import android.content.res.Configuration;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -22,6 +22,7 @@ public class MyActivity extends Activity {
 
     ArrayList<String> arrayList;
     ArrayList<Pair> pairs;
+    ArrayList<Quadro> quadros;
 
     void fillArray() {
         ImagesDataBaseHelper imagesDataBaseHelper = new ImagesDataBaseHelper(getApplicationContext());
@@ -30,6 +31,7 @@ public class MyActivity extends Activity {
         int pathColumn = cursor.getColumnIndex(ImagesDataBaseHelper.PATH);
         arrayList.clear();
         pairs.clear();
+        quadros.clear();
         while (cursor.moveToNext()) {
             arrayList.add(cursor.getString(pathColumn));
         }
@@ -39,10 +41,18 @@ public class MyActivity extends Activity {
         for (int i = 0; i < arrayList.size(); i += 2) {
             pairs.add(new Pair(arrayList.get(i), arrayList.get(i + 1)));
         }
+        for (int i = 3; i < arrayList.size(); i += 4) {
+            quadros.add(new Quadro(arrayList.get(i - 3), arrayList.get(i - 2), arrayList.get(i - 1), arrayList.get(i)));
+        }
+
         cursor.close();
         sqLiteDatabase.close();
         imagesDataBaseHelper.close();
-        drawableAdapter.notifyDataSetChanged();
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+            drawableAdapter.notifyDataSetChanged();
+        } else {
+            drawableAdapterLandscape.notifyDataSetChanged();
+        }
     }
 
 
@@ -61,6 +71,7 @@ public class MyActivity extends Activity {
 
 
     DrawableAdapter drawableAdapter;
+    DrawableAdapterLandscape drawableAdapterLandscape;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,8 +89,13 @@ public class MyActivity extends Activity {
                     public void onClick(DialogInterface dialog, int which) {
                         btnUpdate.setClickable(false);
                         Toast.makeText(getApplicationContext(), getResources().getText(R.string.download_started), Toast.LENGTH_LONG).show();
-                        pairs.clear();
-                        drawableAdapter.notifyDataSetChanged();
+                        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+                            pairs.clear();
+                            drawableAdapter.notifyDataSetChanged();
+                        } else {
+                            quadros.clear();
+                            drawableAdapterLandscape.notifyDataSetChanged();
+                        }
                         Intent intent = new Intent();
                         intent.setClass(getApplicationContext(), DownloadService.class);
                         startService(intent);
@@ -100,11 +116,20 @@ public class MyActivity extends Activity {
 
         arrayList = new ArrayList<String>();
         pairs = new ArrayList<Pair>();
+        quadros = new ArrayList<Quadro>();
         drawableAdapter = new DrawableAdapter(getApplicationContext(), pairs);
+        drawableAdapterLandscape = new DrawableAdapterLandscape(getApplicationContext(), quadros);
         ListView listView = (ListView) findViewById(R.id.listView);
-        listView.setAdapter(drawableAdapter);
-        fillArray();
-        drawableAdapter.notifyDataSetChanged();
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+            listView.setAdapter(drawableAdapter);
+            fillArray();
+            drawableAdapter.notifyDataSetChanged();
+        } else {
+            listView.setAdapter(drawableAdapterLandscape);
+            fillArray();
+            drawableAdapterLandscape.notifyDataSetChanged();
+        }
+
     }
 
     @Override

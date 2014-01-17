@@ -95,7 +95,7 @@ public class DownloadService extends IntentService {
         sqLiteDatabase.execSQL(imagesDataBaseHelper.dropDataBase());
         sqLiteDatabase.execSQL(imagesDataBaseHelper.createDatabase());
         ContentValues contentValues;
-        for (int i = 0; i < 30; i++) {
+        for (int i = 0; i < 20; i++) {
             contentValues = new ContentValues();
             contentValues.put(ImagesDataBaseHelper.URL, arrayList.get(i));
             contentValues.put(ImagesDataBaseHelper.PATH, downloadDrawable(arrayList.get(i)));
