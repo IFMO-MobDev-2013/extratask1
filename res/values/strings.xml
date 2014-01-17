@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">PhotosViewer</string>
+    <string name="BadInternetAndMemory">Bad Internet connection. There are not old photos to show.</string>
+    <string name="SuccessfulUpdate">Successful update.</string>
+    <string name="ButtonUpdate">Update</string>
+    <string name="StartUpdate">Begin updating</string>
+    <string name="NewImagesCome">New images had been downloaded. Change images? (Old images will be deleted)</string>
+    <string name="YesChange">Yes</string>
+    <string name="NoChange">No</string>
+</resources>
