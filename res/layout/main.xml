@@ -3,44 +3,22 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         >
 
-    <Space
-            android:layout_width="0dip"
+    <Button
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/ref"
+            android:onClick="refresh"
+            android:id="@+id/button" android:layout_gravity="center"/>
+    <GridView
+            android:id="@+id/gridview"
+            android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:id="@+id/space1"
-            android:layout_weight="1"
+            android:stretchMode="columnWidth"
+            android:numColumns="2"
             />
 
-    <LinearLayout
-        android:layout_width="0dip"
-        android:layout_height="match_parent"
-        android:layout_weight="8"
-        android:orientation="vertical">
-
-
-        <Button
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/ref"
-                android:onClick="refresh"
-                android:id="@+id/button" android:layout_gravity="center"/>
-        <GridView
-                android:id="@+id/gridview"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:stretchMode="columnWidth"
-                android:numColumns="2"
-                />
-
-    </LinearLayout>
-
-    <Space
-            android:layout_width="0dip"
-            android:layout_height="fill_parent"
-            android:layout_weight="1"
-            android:id="@+id/space2"
-            />
 </LinearLayout>
 

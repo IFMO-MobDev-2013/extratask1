@@ -2,6 +2,7 @@ package com.example.extratask;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.os.Handler;
@@ -37,9 +38,18 @@ public class MainActivity extends Activity implements AppResultsReceiver.Receive
 
 
         double k = 0.1;
-
-        gridView.setHorizontalSpacing((int)(width * k));
+        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)  {
+        //gridView.setHorizontalSpacing((int)(width * k));
         gridView.setVerticalSpacing((int)(width * k));
+        gridView.setColumnWidth((int)(width*0.35));
+        gridView.setStretchMode(GridView.STRETCH_SPACING_UNIFORM);
+        } else {
+            k = 0.04;
+            gridView.setVerticalSpacing((int)(width * k));
+            gridView.setColumnWidth((int)(width*0.2));
+            gridView.setNumColumns(4);
+            gridView.setStretchMode(GridView.STRETCH_SPACING_UNIFORM);
+        }
 
         images = new ArrayList<>();
         db.getAllImages(images);
