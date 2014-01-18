@@ -16,10 +16,10 @@ public class ImageAdapter extends BaseAdapter {
 	private Context context;
 	private double imageSize;
 
-	public ImageAdapter(ArrayList<Bitmap> images, Context context, int width) {
+	public ImageAdapter(ArrayList<Bitmap> images, Context context, int width, boolean isPortraitOrientation) {
 		this.images = images;
 		this.context = context;
-		this.imageSize = 35 * width / 100;
+		this.imageSize = isPortraitOrientation ? 35 * width / 100 : 20 * width / 100;
 	}
 
 	@Override
@@ -58,5 +58,9 @@ public class ImageAdapter extends BaseAdapter {
 		imageView.setImageBitmap(croppedBitmap);
 		imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
 		return imageView;
+	}
+
+	public void updateImages(ArrayList<Bitmap> newImages) {
+		images = newImages;
 	}
 }

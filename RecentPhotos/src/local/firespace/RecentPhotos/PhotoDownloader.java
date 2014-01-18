@@ -21,31 +21,12 @@ import java.util.ArrayList;
 
 public class PhotoDownloader {
 	private static final String URL_API_PHOTKI = "http://api-fotki.yandex.ru/api/recent/";
-	private static final int COUNT_PHOTOS = 10;
+	private static final int COUNT_PHOTOS = 20;
 
 	private ArrayList<String> URLs = new ArrayList<String>();
 	private ArrayList<Bitmap> photos = new ArrayList<Bitmap>();
 
 	public ArrayList<Bitmap> getPhotos() {
-
-		/*StringBuilder response = new StringBuilder();
-		try {
-			HttpURLConnection connection = (HttpURLConnection) new URL(URL_API_PHOTKI).openConnection();
-			Log.d("Response code", ((Integer)connection.getResponseCode()).toString());
-
-			BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-			String inputLine;
-			while ((inputLine = in.readLine()) != null) {
-				response.append(inputLine);
-				Log.d("input", inputLine);
-			}
-			in.close();
-		} catch (Exception e) {
-			Log.e("DownloadDoc", "fail downloading document");
-			return null;
-		}*/
-
-
 
 		try {
 			HttpClient client = new DefaultHttpClient();
@@ -64,15 +45,6 @@ public class PhotoDownloader {
 			e.printStackTrace();
 			Log.e("Download", "fail opening URL");
 		}
-
-		/*try {
-			SAXParserFactory.newInstance().newSAXParser().parse(response.toString(), new MySAXHandler());
-			Log.d("Parsing", "Parse OK");
-		} catch (Exception e) {
-			Log.e("Parsing", "Parse fail");
-			e.printStackTrace();
-			return null;
-		}*/
 
 		for (int i = 0; i < COUNT_PHOTOS; i++) {
 			try {
@@ -100,7 +72,7 @@ public class PhotoDownloader {
 	private class MySAXHandler extends DefaultHandler {
 		int currCountPhotos = 0;
 		private static final String TAG_SIZE = "size";
-		private static final String TAG_CURR_SIZE = "L";
+		private static final String TAG_CURR_SIZE = "XL";
 		private static final String TAG_HREF = "href";
 
 		@Override
