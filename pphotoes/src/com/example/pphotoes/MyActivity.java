@@ -16,10 +16,9 @@ import android.widget.TextView;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.PrintStream;
 import java.net.HttpURLConnection;
-import java.net.Socket;
 import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -33,12 +32,14 @@ public class MyActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-        ((TextView) findViewById(R.id.textView)).setText("Downloading images...");
+        setRes(null);
         AsyncTask<Void, Void, List<Bitmap>> translator = new Downloader();
         translator.execute();
+        ((TextView) findViewById(R.id.textView)).setText("Downloading images...");
     }
 
     public void onClick(View view) {
+        setRes(null);
         AsyncTask<Void, Void, List<Bitmap>> translator = new Downloader();
         translator.execute();
         findViewById(R.id.button).setClickable(false);
@@ -46,6 +47,18 @@ public class MyActivity extends Activity {
     }
 
     public void setRes(List<Bitmap> bm) {
+        DatabaseHandler databaseHandler = new DatabaseHandler(this);
+        if (bm == null) {
+            bm = databaseHandler.getAll();
+        } else {
+            int num = databaseHandler.getAll().size();
+            for (int i = 1; i < num + 1; i++) {
+                databaseHandler.updateData(i, bm.get(i - 1));
+            }
+            for (int i = num + 1; i < 21; i++) {
+                databaseHandler.addData(bm.get(i - 1));
+            }
+        }
         btm = bm;
         Display display = getWindowManager().getDefaultDisplay();
         Point size = new Point();
@@ -63,7 +76,11 @@ public class MyActivity extends Activity {
                 startActivity(intent);
             }
         });
-        ((TextView) findViewById(R.id.textView)).setText("Images:");
+        if (bm.size() == 0) {
+            ((TextView) findViewById(R.id.textView)).setText("No internet connection!");
+        } else {
+            ((TextView) findViewById(R.id.textView)).setText("Images:");
+        }
         findViewById(R.id.button).setClickable(true);
     }
 
@@ -93,35 +110,38 @@ public class MyActivity extends Activity {
 
         @Override
         protected List<Bitmap> doInBackground(Void... v) {
-            String query = "GET /api/top/published/?limit=20 HTTP/1.1\n" +
-                    "Host: api-fotki.yandex.ru\n" +
-                    "Accept: application/atom+xml; type=entry\n", result = "";
             try {
-                Socket s = new Socket("api-fotki.yandex.ru", 80);
-                PrintStream out = new PrintStream(s.getOutputStream());
-                out.println(query);
-                Scanner scanner = new Scanner(s.getInputStream());
+                String query = "http://api-fotki.yandex.ru/api/recent/", result = "";
+                URL url = new URL(query);
+                URLConnection connection = url.openConnection();
+                connection.setConnectTimeout(10000);
+                connection.setReadTimeout(10000);
+                Scanner scanner = new Scanner(connection.getInputStream());
                 while (scanner.hasNext()) {
                     result += scanner.nextLine();
                 }
-            } catch (IOException e) {
-            }
-            List<Bitmap> images = new ArrayList<Bitmap>();
-            for (int i = 0; i < result.length() - 15; i++) {
-                if (result.substring(i, i + 14).equals("<content src=\"")) {
-                    String url = "";
-                    for (int j = i + 14; ; j++) {
-                        char c = result.charAt(j);
-                        if (c == '"') {
-                            i = j;
+                List<Bitmap> images = new ArrayList<Bitmap>();
+                for (int i = 0; i < result.length() - 15; i++) {
+                    if (result.substring(i, i + 14).equals("<content src=\"")) {
+                        String urls = "";
+                        for (int j = i + 14; ; j++) {
+                            char c = result.charAt(j);
+                            if (c == '"') {
+                                i = j;
+                                break;
+                            }
+                            urls += c;
+                        }
+                        images.add(getBitmapFromURL(urls));
+                        if (images.size() == 20) {
                             break;
                         }
-                        url += c;
                     }
-                    images.add(getBitmapFromURL(url));
                 }
+                return images;
+            } catch (Exception e) {
+                return null;
             }
-            return images;
         }
 
         @Override
