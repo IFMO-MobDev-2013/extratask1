@@ -89,7 +89,6 @@ public class RecentActivity extends Activity {
     }
 
     private void setAdapter(Bitmap[] bitmap) {
-        if (checkInternetConnection()) saveBitmap();
         DisplayMetrics dimension = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dimension);
         int size;
@@ -240,6 +239,7 @@ public class RecentActivity extends Activity {
             if (dialog != null) {
                 dialog.dismiss();
             }
+            if (checkInternetConnection()) saveBitmap();
             setAdapter(images);
         }
         }
