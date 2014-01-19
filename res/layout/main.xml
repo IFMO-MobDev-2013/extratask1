@@ -4,9 +4,16 @@
         android:layout_height="fill_parent"
         xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <TextView
+    <LinearLayout
+            android:orientation="horizontal"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text="Яндекс.Фотки"
             android:id="@+id/textView"
             android:gravity="center"
@@ -19,6 +26,7 @@
             android:id="@+id/imageButton"
             android:src="@drawable/refresh"
             android:layout_gravity="right|center_vertical"/>
+        </LinearLayout>
 
 
     <GridView xmlns:android="http://schemas.android.com/apk/res/android"
