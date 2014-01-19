@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Popular photo</string>
+    <string name="yandex_photo">Популярные ЯндексФотки</string>
+    <string name="update_photo">Обновить фотографии</string>
+    <string name="wait">Ничего не трогайте! Загружаем новые фотки :)</string>
+    <string name="not_found">База данных приложения не найдена</string>
+    <string name="internet">Ошибка: Невозможно выполнить сетевой запрос. Проверьте наличие Интернет соединения</string>
+    <string name="error">Ошибка загрузки данных</string>
+    <string name="update">Обновление успешно завершено</string>
+</resources>
