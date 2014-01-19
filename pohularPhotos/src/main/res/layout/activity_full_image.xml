@@ -1,0 +1,24 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="ru.skipor.popularPhotos.FullImageActivity"
+    tools:ignore="MergeRootFrame"
+    android:gravity="center"
+    >
+
+    <TextView
+        android:id="@+id/information_text_view"
+        android:text="@string/full_image_inform_text"
+        android:textSize="@dimen/inform_text_size"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+
+    <ImageView
+        android:id="@+id/image_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</RelativeLayout>
