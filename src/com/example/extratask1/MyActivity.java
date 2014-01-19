@@ -180,7 +180,8 @@ public class MyActivity extends Activity {
     private void printImages(boolean reload){
         ImageDataBase imageDataBase = new ImageDataBase(getApplicationContext());
         SQLiteDatabase liteDatabase = imageDataBase.getReadableDatabase();
-        if(liteDatabase == null){
+        Cursor cursor = liteDatabase.query(imageDataBase.getTableName(), null, null, null, null, null, null);
+        if(liteDatabase == null || cursor.getCount() == 0){
             if(checkConnection()){
                 updateClick((View) findViewById(R.id.button));
             } else{
@@ -191,7 +192,7 @@ public class MyActivity extends Activity {
         }else{
             smallPictures.clear();
             bigPictures.clear();
-            Cursor cursor = liteDatabase.query(imageDataBase.getTableName(), null, null, null, null, null, null);
+
 
             while(cursor.moveToNext()){
                 smallPictures.add(Bitmap.createBitmap(Converter.fromByteArrayToIntArray(

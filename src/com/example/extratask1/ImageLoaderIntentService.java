@@ -59,7 +59,7 @@ public class ImageLoaderIntentService extends IntentService {
             SAXParser saxParser = saxParserFactory.newSAXParser();
             saxParser.parse(new ByteArrayInputStream(EntityUtils.toString(new DefaultHttpClient().execute(new HttpGet(API)).getEntity()).getBytes()),
                     new RSSHandler());
-            for(int i = 0; i < 20; i++){
+            for(int i = 0; i < MyActivity.PIC_COUNT; i++){
                 smallPictures.add(BitmapFactory.decodeStream(new URL(smallPicturesLinks.get(i)).openStream()));
             }
             if (smallPictures.size() != 0)
