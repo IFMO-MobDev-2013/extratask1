@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">YaFotka</string>
+    <string name="reload">Обновляемся...</string>
+    <string name="internetConnectionError">Возможно вам следует заплатить за интернет или найти точку доступа!</string>
+    <string name="databaseError">Грусть-печаль: ваша база не нашлась;(</string>
+    <string name="reloadSuccess">Мы обвились:)</string>
+    <string name="title">Яндекс Фотки!</string>
+    <string name="fatalError">Возникла ошибка, возможно следует нажать на ОБНОВИТЬ более нежно!</string>
+    <string name="loadError">Ошибка загрузки данных!</string>
+</resources>
