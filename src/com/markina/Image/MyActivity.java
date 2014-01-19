@@ -1,6 +1,7 @@
 package com.markina.Image;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -39,6 +40,7 @@ public class MyActivity extends Activity implements View.OnClickListener {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        dialog = new ProgressDialog(this);
         setContentView(R.layout.main);
         button = (Button) findViewById(R.id.UpBtn);
         button.setOnClickListener(this);
@@ -84,6 +86,7 @@ public class MyActivity extends Activity implements View.OnClickListener {
 
                     @Override
                     public void run() {
+                        dialog.dismiss();
                         Toast.makeText(MyActivity.this, "No internet! :)", Toast.LENGTH_SHORT);
                     }
                 });
@@ -92,6 +95,7 @@ public class MyActivity extends Activity implements View.OnClickListener {
             MyActivity.this.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
+                    dialog.dismiss();
                     images.removeAllViews();
                     for(Bitmap bitmap : strings) {
                         ImageView image = new ImageView(MyActivity.this);
@@ -149,8 +153,12 @@ public class MyActivity extends Activity implements View.OnClickListener {
     Intent intent = new Intent();
     String enans;
 
+    ProgressDialog dialog;
+
     @Override
     public void onClick(View v) {
+        dialog.setCancelable(false);
+        dialog.show();
         new Download().execute();
         button.setEnabled(false);
     }
