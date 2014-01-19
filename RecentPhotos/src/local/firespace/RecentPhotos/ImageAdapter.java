@@ -41,17 +41,17 @@ public class ImageAdapter extends BaseAdapter {
 	public View getView(int position, View convertView, ViewGroup parent) {
 		ImageView imageView = new ImageView(context);
 
-		boolean isLandscape = images.get(position).getWidth() > images.get(position).getHeight();
+		boolean isImageLandscape = images.get(position).getWidth() > images.get(position).getHeight();
 
-		float scale_factor = isLandscape ?
+		float scale_factor = isImageLandscape ?
 				(float)imageSize / images.get(position).getHeight() :
 				(float)imageSize / images.get(position).getWidth();
 		Matrix matrix = new Matrix();
 		matrix.postScale(scale_factor, scale_factor);
-		int start = isLandscape ?
+		int start = isImageLandscape ?
 				(images.get(position).getWidth() - images.get(position).getHeight()) / 2 :
 				(images.get(position).getHeight() - images.get(position).getWidth()) / 2;
-		Bitmap croppedBitmap = isLandscape ?
+		Bitmap croppedBitmap = isImageLandscape ?
 				Bitmap.createBitmap(images.get(position), start, 0, images.get(position).getHeight(), images.get(position).getHeight(), matrix, true) :
 				Bitmap.createBitmap(images.get(position), 0, start, images.get(position).getWidth(), images.get(position).getWidth(), matrix, true);
 

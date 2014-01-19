@@ -72,7 +72,7 @@ public class ImagesDatabase  {
 	}
 
 	public Bitmap getImageByID(Integer key) {
-		Cursor cursor = database.query(DATABASE_NAME, null, KEY_ID + " = ?", new String[] {key.toString()}, null, null, null);
+		Cursor cursor = database.query(DATABASE_NAME, null, KEY_IMAGE_ID + " = ?", new String[] {key.toString()}, null, null, null);
 		cursor.moveToFirst();
 		if (cursor.getCount() < 1) {
 			return null;

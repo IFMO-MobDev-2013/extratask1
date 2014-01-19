@@ -21,7 +21,7 @@ import java.util.ArrayList;
 
 public class PhotoDownloader {
 	private static final String URL_API_PHOTKI = "http://api-fotki.yandex.ru/api/recent/";
-	private static final int COUNT_PHOTOS = 20;
+	public static final int COUNT_PHOTOS = 20;
 
 	private ArrayList<String> URLs = new ArrayList<String>();
 	private ArrayList<Bitmap> photos = new ArrayList<Bitmap>();
