@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -30,7 +31,7 @@ public class RecentActivity extends Activity {
     private final String MOBILE = "MOBILE";
 
     private final String QUALITY = "M";
-    private final String URL = "url";
+    private final String POS = "pos";
     private final int IMAGECOUNT = 20;
     GridView grid;
     String[] urls;
@@ -50,7 +51,6 @@ public class RecentActivity extends Activity {
         getActionBar().setBackgroundDrawable(getResources().getDrawable(R.drawable.bar));
         if (checkInternetConnection()) getImages();
         else {
-            urls = db.getUrls();
             images = db.getImages();
             setAdapter(images);
         }
@@ -86,8 +86,6 @@ public class RecentActivity extends Activity {
             urls[i] = url;
         }
         new ImageDownloader(urls).execute();
-
-
     }
 
     private void setAdapter(Bitmap[] bitmap) {
@@ -100,20 +98,38 @@ public class RecentActivity extends Activity {
         } else {
             size = 2;
         }
-        Bitmap[] newBitmap = copyFromBitmap(bitmap);
+        Bitmap[] newBitmap = copyAndScaleFromBitmap(bitmap, size, dimension.widthPixels);
 
-        grid.setAdapter(new ImageAdapter(this, newBitmap, size, true, dimension.widthPixels));
+        grid.setAdapter(new ImageAdapter(this, newBitmap));
     }
 
-    private Bitmap[] copyFromBitmap(Bitmap[] bm) {
+    private Bitmap[] copyAndScaleFromBitmap(Bitmap[] bitmap, int orientation, int width) {
+        int imageSize = 0;
+        if (orientation == 1) {
+            imageSize = 35 * width / 100;
+        } else imageSize = 20 * width / 100;
         int ssize = 0;
-        while (bm[ssize] != null) {
+        while (bitmap[ssize] != null) {
             ssize++;
-            if (ssize == bm.length) break;
+            if (ssize == bitmap.length) break;
         }
         Bitmap[] result = new Bitmap[ssize];
         for (int i = 0; i < ssize; i++) {
-            result[i] = bm[i];
+            boolean landscape = bitmap[i].getWidth() > bitmap[i].getHeight();
+
+            float scale_factor;
+            if (landscape) scale_factor = (float)imageSize / bitmap[i].getHeight();
+            else scale_factor = (float)imageSize / bitmap[i].getWidth();
+            Matrix matrix = new Matrix();
+            matrix.postScale(scale_factor, scale_factor);
+
+            if (landscape){
+                int start = (bitmap[i].getWidth() - bitmap[i].getHeight()) / 2;
+                result[i] = Bitmap.createBitmap(bitmap[i], start, 0, bitmap[i].getHeight(), bitmap[i].getHeight(), matrix, true);
+            } else {
+                int start = (bitmap[i].getHeight() - bitmap[i].getWidth()) / 2;
+                result[i] = Bitmap.createBitmap(bitmap[i], 0, start, bitmap[i].getWidth(), bitmap[i].getWidth(), matrix, true);
+            }
         }
         return result;
     }
@@ -122,15 +138,12 @@ public class RecentActivity extends Activity {
         grid.setOnItemClickListener( new AdapterView.OnItemClickListener(){
             public void onItemClick(AdapterView<?> adapter, View view, int position, long arg3) {
                 Intent intent = new Intent(RecentActivity.this, OneImageView.class);
-                intent.putExtra(URL, urls[position]);
+                intent.putExtra(POS, position);
                 startActivity(intent);
             }
         });
     }
     private void setPadding() {
-
-
-
         DisplayMetrics dimension = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dimension);
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
@@ -173,7 +186,7 @@ public class RecentActivity extends Activity {
             @Override
             public void run() {
                 db.deleteAll();
-                db.saveBitmaps(images, urls);
+                db.saveBitmaps(images);
             }
         });
         thread.start();

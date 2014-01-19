@@ -14,10 +14,10 @@ public class DBAdapter {
 
     public static final String TABLE_ID = "_id";
     private static final String DATABASE_NAME = "images";
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 3;
     public static final String TABLE_NAME = "image_table";
     public static final String BITMAP = "bitmap";
-    public static final String URL = "url";
+    public static final String POSITION = "position";
     private final int IMAGECOUNT = 20;
 
 
@@ -25,7 +25,7 @@ public class DBAdapter {
     private static final String SQL_CREATE_ENTRIES = "create table "
             + TABLE_NAME + " ("
             + TABLE_ID + " integer primary key autoincrement, "
-            + URL + " text not null, "
+            + POSITION + " integer not null, "
             + BITMAP + " BLOB not null ); ";
 
     private static final String SQL_DELETE_ENTRIES = "DROP TABLE IF EXISTS "
@@ -43,13 +43,13 @@ public class DBAdapter {
         db = DBHelper.getWritableDatabase();
     }
 
-    public void saveBitmaps(Bitmap[] bmp, String[] urls) {
+    public void saveBitmaps(Bitmap[] bmp) {
         for (int i = 0; i < bmp.length; i++) {
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
             bmp[i].compress(Bitmap.CompressFormat.PNG, 100, stream);
             byte[] bytes = stream.toByteArray();
             ContentValues cv = new ContentValues();
-            cv.put(BITMAP, bytes); cv.put(URL, urls[i]);
+            cv.put(BITMAP, bytes); cv.put(POSITION, i);
             db.insert(TABLE_NAME, null, cv);
         }
     }
@@ -67,23 +67,12 @@ public class DBAdapter {
         return bmp;
     }
 
-    public Bitmap getImageByUrl(String url) {
-        Cursor cursor = db.query(TABLE_NAME, null, URL + " = ?", new String[]{url}, null, null, null);
+    public Bitmap getImageById(int id) {
+        Cursor cursor = db.query(TABLE_NAME, null, POSITION + " = ?", new String[]{String.valueOf(id)}, null, null, null);
         cursor.moveToFirst();
         if (cursor.getCount() <= 0) return null;
         byte[] bb = cursor.getBlob(cursor.getColumnIndex(BITMAP));
         return BitmapFactory.decodeByteArray(bb, 0, bb.length);
-    }
-
-    public String[] getUrls() {
-        Cursor cursor = getAllData();
-        String[] res = new String[IMAGECOUNT];
-        int size = - 1;
-        while (cursor.moveToNext()) {
-            size++;
-            res[size] = cursor.getString(cursor.getColumnIndex(URL));
-        }
-        return res;
     }
 
     public Cursor getAllData() {

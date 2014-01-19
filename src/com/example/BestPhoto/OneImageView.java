@@ -18,14 +18,11 @@ import java.net.URL;
 
 
 public class OneImageView extends Activity {
-    private final String URL = "url";
-    private final String WIFI = "WIFI";
-    private final String MOBILE = "MOBILE";
+    private final String POS = "pos";
 
-    ImageView image, i2;
-    String url;
+    ImageView image;
+    int pos;
     DBAdapter db;
-    Bitmap imageBitmap;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -36,16 +33,14 @@ public class OneImageView extends Activity {
             setContentView(R.layout.main2);
         }
         getActionBar().setBackgroundDrawable(getResources().getDrawable(R.drawable.bar));
-        url = getIntent().getStringExtra(URL);
+        pos = getIntent().getIntExtra(POS, 1);
         db = new DBAdapter(this);
         setImage();
     }
 
     private void setImage() {
         image = (ImageView) findViewById(R.id.imageView);
-        if (checkInternetConnection()) {
-            new ImageDownloader(url).execute();
-        } else image.setImageBitmap(db.getImageByUrl(url));
+        image.setImageBitmap(db.getImageById(pos));
     }
 
     @Override
@@ -59,56 +54,4 @@ public class OneImageView extends Activity {
         setImage();
     }
 
-    private boolean checkInternetConnection() {
-        boolean haveConnectedWifi = false;
-        boolean haveConnectedMobile = false;
-
-        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo[] netInfo = cm.getAllNetworkInfo();
-        for (NetworkInfo ni : netInfo) {
-            if (ni.getTypeName().equalsIgnoreCase(WIFI))
-                if (ni.isConnected())
-                    haveConnectedWifi = true;
-            if (ni.getTypeName().equalsIgnoreCase(MOBILE))
-                if (ni.isConnected())
-                    haveConnectedMobile = true;
-        }
-        return haveConnectedWifi || haveConnectedMobile;
-    }
-
-    class ImageDownloader extends AsyncTask<String, Void, Void> {
-        ProgressDialog dialog;
-        String imageUrl;
-
-        public ImageDownloader(String imageUrl) {
-            this.imageUrl = imageUrl;
-        }
-
-        protected void onPreExecute() {
-            super.onPreExecute();
-            dialog = new ProgressDialog(OneImageView.this);
-            dialog.setMessage(getResources().getString(R.string.downloading));
-            dialog.show();
-        }
-
-        @Override
-        protected Void doInBackground(String... params) {
-            try {
-                    java.net.URL url = new java.net.URL(imageUrl);
-                    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-                    connection.setDoInput(true);
-                    connection.connect();
-                    InputStream input = connection.getInputStream();
-                    imageBitmap = BitmapFactory.decodeStream(input);
-            } catch(Exception e) {
-            }
-            return null;
-        }
-        protected void onPostExecute(Void v) {
-            if (dialog != null) {
-                dialog.dismiss();
-            }
-            image.setImageBitmap(imageBitmap);
-        }
-    }
 }
