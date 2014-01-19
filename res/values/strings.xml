@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Activity titles -->
+    <string name="app_name">Yandex Viewer</string>
+    <string name="ac_name_image_grid">Grid</string>
+    <string name="ac_name_image_pager">Pager</string>
+    <!-- Labels -->
+    <string name="menu_item_refresh">Refresh</string>
+    <!-- Content descriptions -->
+    <string name="descr_image">Image</string>
+
+</resources>
