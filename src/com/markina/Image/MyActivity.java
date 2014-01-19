@@ -2,9 +2,12 @@ package com.markina.Image;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -55,6 +58,7 @@ public class MyActivity extends Activity implements View.OnClickListener {
         @Override
         protected List<Bitmap> doInBackground(String... params) {
             try {
+                isOnline();
                 String url = "http://api-fotki.yandex.ru/api/recent/";
                 HttpClient client = new DefaultHttpClient();
                 HttpGet get = new HttpGet(url);
@@ -106,6 +110,15 @@ public class MyActivity extends Activity implements View.OnClickListener {
                     button.setEnabled(true);
                 }
             });
+        }
+
+        public boolean isOnline() throws IOException {
+            DefaultHttpClient httpClient = new DefaultHttpClient();
+            String v = "http://api.worldweatheronline.com/free/v1/weather.ashx?q=" + 50 + ","+ 50 +
+                    "&format=xml&num_of_days=5&key=9379gushvyewdcqy66ya3ppm&extra=localObsTime";
+            HttpGet httpGet = new HttpGet(v);
+            HttpResponse httpResponse = httpClient.execute(httpGet);
+            return true;
         }
 
         public String readStream(InputStream in) {
