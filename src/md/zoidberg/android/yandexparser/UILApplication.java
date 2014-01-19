@@ -30,7 +30,6 @@ import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
  */
 public class UILApplication extends Application {
 	@TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
-	@SuppressWarnings("unused")
 	@Override
 	public void onCreate() {
 		super.onCreate();

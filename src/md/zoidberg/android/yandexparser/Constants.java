@@ -15,7 +15,7 @@
  *******************************************************************************/
 package md.zoidberg.android.yandexparser;
 
-import com.nostra13.example.universalimageloader.R;
+import md.zoidberg.android.yandexparser.R;
 
 public final class Constants {
 	private Constants() {

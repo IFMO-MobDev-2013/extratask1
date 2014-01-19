@@ -1,5 +1,6 @@
 package md.zoidberg.android.yandexparser;
 
+import android.util.Log;
 import md.zoidberg.android.yandexparser.db.Image;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -12,7 +13,7 @@ public class FotkiApiParser extends DefaultHandler {
     ArrayList<Image> images;
 
     final String IMAGE = "f:img";
-    final String PREFERRED_SIZE = "M";
+    final String PREFERRED_SIZE = "XL";
 
     FotkiApiParser(ArrayList<Image> images) {
         super();

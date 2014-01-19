@@ -3,10 +3,11 @@
 
     <!-- Activity titles -->
     <string name="app_name">Yandex Viewer</string>
-    <string name="ac_name_image_grid">Grid</string>
-    <string name="ac_name_image_pager">Pager</string>
+    <string name="ac_name_image_grid">Popular images</string>
+    <string name="ac_name_image_pager">Image</string>
     <!-- Labels -->
     <string name="menu_item_refresh">Refresh</string>
+    <string name="toast_refreshed">Items refreshed.</string>
     <!-- Content descriptions -->
     <string name="descr_image">Image</string>
 
