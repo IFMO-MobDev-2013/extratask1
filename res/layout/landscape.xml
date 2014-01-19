@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+    <Space
+            android:layout_width="fill_parent"
+            android:layout_height="10dp"
+            android:id="@+id/space" android:layout_weight="10"/>
+    <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" android:layout_weight="80">
+        <Space
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:id="@+id/space2" android:layout_weight="4"/>
+        <ImageView
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:id="@+id/imageLand1" android:layout_weight="20"/>
+        <Space
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:id="@+id/space3" android:layout_weight="4"/>
+        <ImageView
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:id="@+id/imageLand2" android:layout_weight="20"/>
+        <Space
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:id="@+id/space4" android:layout_weight="4"/>
+        <ImageView
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:id="@+id/imageLand3" android:layout_weight="20"/>
+        <Space
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:id="@+id/space5" android:layout_weight="4"/>
+        <ImageView
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:id="@+id/imageLand4" android:layout_weight="20"/>
+        <Space
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:id="@+id/space6" android:layout_weight="4"/>
+    </LinearLayout>
+    <Space
+            android:layout_width="fill_parent"
+            android:layout_height="10dp"
+            android:id="@+id/space1" android:layout_weight="10"/>
+</LinearLayout>
