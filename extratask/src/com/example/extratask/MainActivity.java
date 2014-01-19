@@ -37,7 +37,7 @@ public class MainActivity extends Activity {
    // public static boolean database_empty = true;
     public static boolean is_land;
     public static Bitmap[] bitmaps;
-    public static Bitmap[] full_size_bitmaps;
+    public static String[] full_size_bitmaps;
     public static int width;
     public static GridView gridView;
     public static Context context;
@@ -50,7 +50,7 @@ public class MainActivity extends Activity {
         context = getApplicationContext();
         is_land = (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE);
         setContentView(R.layout.main);
-        full_size_bitmaps = new Bitmap[20];
+        full_size_bitmaps = new String[20];
         bitmaps = new Bitmap[20];
         gridView = (GridView) findViewById(R.id.gridView);
         Point size = new Point();
@@ -183,16 +183,16 @@ public class MainActivity extends Activity {
                             h = h1;
                         }
                     }
+                    MainActivity.full_size_bitmaps[i] = temp;
 
-
-
+                   /*
                     imageUrl = new URL(temp);
                     connection = (HttpURLConnection) imageUrl.openConnection();
                     connection.setDoInput(true);
                     connection.connect();
                     input = connection.getInputStream();
                     MainActivity.full_size_bitmaps[i] = BitmapFactory.decodeStream(input);
-
+                      */
 
                 }
 
