@@ -26,13 +26,11 @@ public class DownloadService extends IntentService {
         super.onCreate();
     }
 
-    private static final String url = "http://api.flickr.com/services/rest/" +
-            "?method=flickr.interestingness.getList" +
-            "&api_key=da45ec325e2f6498f044d184908f10e2" +
-            "&per_page=20" +
-            "&format=json&nojsoncallback=1" +
-            "&auth_token=72157639852388756-35399dba42724794" +
-            "&api_sig=11eb5c4c06422b95584ae9429e83bab3";
+    private static final String url = "http://api.flickr.com/services/rest/?" +
+            "method=flickr.interestingness.getList&" +
+            "api_key=a5e90f753ad62a0f97eba79d831134e5&" +
+            "per_page=20&" +
+            "format=json&nojsoncallback=1";
 
     @Override
     protected void onHandleIntent(Intent intent) {
@@ -81,6 +79,7 @@ public class DownloadService extends IntentService {
 
             return baf.toByteArray();
         } catch (Exception e) {
+            Log.e("Downloading image", "error");
         }
         return null;
     }

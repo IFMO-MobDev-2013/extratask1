@@ -1,6 +1,7 @@
 package com.example.extratask;
 
 
+import android.util.Log;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -24,6 +25,7 @@ public class ResponseParser {
                 urls.add(url);
             }
         } catch (JSONException e) {
+            Log.e("PARSER", "error");
         }
 
         return urls;
