@@ -154,10 +154,9 @@ public class PicturesAdapter extends BaseAdapter {
             if (holder.model != null) {
                 holder.model.cancel();
             }
-            holder.model = list.get(position);
-            holder.model.setViews(holder.leftView, holder.rightView);
         }
-
+        holder.model = list.get(position);
+        holder.model.setViews(holder.leftView, holder.rightView);
 
         return convertView;
     }

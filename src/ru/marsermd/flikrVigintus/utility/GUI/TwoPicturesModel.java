@@ -23,11 +23,11 @@ import java.util.concurrent.ExecutionException;
  * To change this template use File | Settings | File Templates.
  */
 public class TwoPicturesModel {
-    public ImageView leftView;
-    public ImageView rightView;
+    public volatile ImageView leftView;
+    public volatile ImageView rightView;
     public TextView textView;
-    private volatile ImageApiResult.Image leftImage;
-    private volatile ImageApiResult.Image rightImage;
+    private ImageApiResult.Image leftImage;
+    private ImageApiResult.Image rightImage;
     private File leftFile, rightFile;
 
     private SimpleCachingDownloadTask leftDownloadTask, rightDownloadTask;

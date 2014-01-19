@@ -78,15 +78,16 @@ public class PicturesAdapterLandscape extends PicturesAdapter {
             if (holder.model_left != null) {
                 holder.model_left.cancel();
             }
-            holder.model_left = list.get(position * 2);
-            holder.model_left.setViews(holder.leftLeftView, holder.leftRightView);
-
             if (holder.model_right != null) {
                 holder.model_right.cancel();
             }
-            holder.model_right = list.get(position * 2 + 1);
-            holder.model_right.setViews(holder.rightLeftView, holder.rightRightView);
         }
+        holder.model_left = list.get(position * 2);
+        holder.model_left.setViews(holder.leftLeftView, holder.leftRightView);
+
+        holder.model_right = list.get(position * 2 + 1);
+        holder.model_right.setViews(holder.rightLeftView, holder.rightRightView);
+
 
 
         return convertView;
