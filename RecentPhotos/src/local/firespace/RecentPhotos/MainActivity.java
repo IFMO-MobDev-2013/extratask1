@@ -67,10 +67,10 @@ public class MainActivity extends Activity {
 		try {
 			photos = new TaskManager().execute().get();
 			if (photos != null) {
+				Log.d("photos", "get photos from internet : " + photos.size());
 				database.reset();
 				database.addImages(photos);
 				adapter.updateImages(photos);
-				gridView.invalidate();
 			}
 		} catch (Exception e) {
 			Log.e("TaskManager", "task manager exception");
@@ -87,11 +87,13 @@ public class MainActivity extends Activity {
 		database = new ImagesDatabase(this);
 		database.open();
 		photos = database.getImages();
-		if (photos == null) {
+		adapter = new ImageAdapter(photos, this, metrics.widthPixels, getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT);
+		if (photos.isEmpty()) {
+			Log.d("photos", "not photos on database");
 			downloadPhotos();
 		}
-		adapter = new ImageAdapter(photos, this, metrics.widthPixels, getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT);
 		gridViewManage();
+		database.close();
 	}
 
 }

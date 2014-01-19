@@ -44,7 +44,7 @@ public class PhotoViewActivity extends Activity {
 		public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
 			Log.d("gesture", velocityX + " ; " + velocityY + " : " + position);
 			if (Math.abs(velocityX) > 1000.0) { // need impressive scroll
-				showAnotherPhoto(velocityX > 0);
+				showAnotherPhoto(velocityX < 0);
 			}
 			return super.onFling(e1, e2, velocityX, velocityY);
 		}
