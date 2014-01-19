@@ -85,6 +85,7 @@ public class PicturesAdapter extends BaseAdapter {
 
     public void addItem() {
         TwoPicturesModel item = new TwoPicturesModel(images.get(count * 2), images.get(count * 2 + 1));
+        item.download();
         list.add(item);
         count++;
     }
@@ -155,7 +156,6 @@ public class PicturesAdapter extends BaseAdapter {
             }
             holder.model = list.get(position);
             holder.model.setViews(holder.leftView, holder.rightView);
-            holder.model.download();
         }
 
 
