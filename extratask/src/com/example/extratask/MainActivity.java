@@ -2,6 +2,7 @@ package com.example.extratask;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Point;
@@ -10,6 +11,8 @@ import android.os.Bundle;
 import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.GridView;
 
 public class MainActivity extends Activity {
@@ -22,6 +25,7 @@ public class MainActivity extends Activity {
     public static GridView gridView;
     public static Context context;
     public static int height;
+    public static final String KEY_POSITION = "position";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -29,6 +33,7 @@ public class MainActivity extends Activity {
         context = getApplicationContext();
         is_land = (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE);
         setContentView(R.layout.main);
+        full_size_bitmaps = new Bitmap[20];
         gridView = (GridView) findViewById(R.id.gridView);
         Point size = new Point();
         Display display = getWindowManager().getDefaultDisplay();
@@ -47,6 +52,15 @@ public class MainActivity extends Activity {
             gridView.setPadding((int)(width * 0.1), (int)(width * 0.1), (int)(width * 0.1), (int)(width * 0.1));
         }
         new Downloader().execute();
+
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Intent intent = new Intent(MainActivity.this, FullSizeImageActivity.class);
+                intent.putExtra(KEY_POSITION, i);
+                startActivity(intent);
+            }
+        });
 
     }
 

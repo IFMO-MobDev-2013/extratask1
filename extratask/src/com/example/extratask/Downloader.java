@@ -46,6 +46,33 @@ public class Downloader extends AsyncTask<Void, Void, Bitmap[]> {
                 connection.connect();
                 InputStream input = connection.getInputStream();
                 res[i] = BitmapFactory.decodeStream(input);
+
+
+                Element el = (Element) childs.item(33);
+                int w = Integer.parseInt(el.getAttribute("width"));
+                int h = Integer.parseInt(el.getAttribute("height"));
+                String temp = el.getAttribute("href");
+                for (int j = 35; j <= childs.getLength() - 4; j += 2) {
+                    el = (Element) childs.item(j);
+                    int w1 = Integer.parseInt(el.getAttribute("width"));
+                    int h1 = Integer.parseInt(el.getAttribute("height"));
+                    if (w < MainActivity.width && h < MainActivity.height && w1 > w && h1 > h) {
+                        temp = el.getAttribute("href");
+                        w = w1;
+                        h = h1;
+                    }
+                }
+
+
+
+                imageUrl = new URL(temp);
+                connection = (HttpURLConnection) imageUrl.openConnection();
+                connection.setDoInput(true);
+                connection.connect();
+                input = connection.getInputStream();
+                MainActivity.full_size_bitmaps[i] = BitmapFactory.decodeStream(input);
+
+
             }
 
         } catch (Exception e) {
