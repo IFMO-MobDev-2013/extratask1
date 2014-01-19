@@ -87,7 +87,8 @@ public class MyActivity extends Activity implements View.OnClickListener {
                     @Override
                     public void run() {
                         dialog.dismiss();
-                        Toast.makeText(MyActivity.this, "No internet! :)", Toast.LENGTH_SHORT);
+                        Toast.makeText(MyActivity.this, "No internet! :)", Toast.LENGTH_SHORT).show();
+                        button.setEnabled(true);
                     }
                 });
             } else
@@ -159,7 +160,7 @@ public class MyActivity extends Activity implements View.OnClickListener {
     public void onClick(View v) {
         dialog.setCancelable(false);
         dialog.show();
-        new Download().execute();
         button.setEnabled(false);
+        new Download().execute();
     }
 }
