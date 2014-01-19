@@ -14,19 +14,17 @@ import org.xml.sax.helpers.DefaultHandler;
 
 import javax.xml.parsers.SAXParserFactory;
 import java.io.*;
-import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
 
 public class PhotoDownloader {
 	private static final String URL_API_PHOTKI = "http://api-fotki.yandex.ru/api/recent/";
-	public static final int COUNT_PHOTOS = 20;
+	public static final int COUNT_PHOTOS = 10;
 
-	private ArrayList<String> URLs = new ArrayList<String>();
-	private ArrayList<Bitmap> photos = new ArrayList<Bitmap>();
+	private String[] URLs = new String[COUNT_PHOTOS];
+	private Bitmap[] photos = new Bitmap[COUNT_PHOTOS];
 
-	public ArrayList<Bitmap> getPhotos() {
+	public Bitmap[] getPhotos() {
 
 		try {
 			HttpClient client = new DefaultHttpClient();
@@ -48,9 +46,10 @@ public class PhotoDownloader {
 
 		for (int i = 0; i < COUNT_PHOTOS; i++) {
 			try {
-				photos.add(loadBitmap( new URL(URLs.get(i))));
+				photos[i] = loadBitmap( new URL(URLs[i]));
 			} catch (MalformedURLException e) {
-				Log.e("DownloadPic", "Bad URL : " + URLs.get(i));
+				Log.e("DownloadPic", "Bad URL : " + URLs[i]);
+				return null;
 			}
 		}
 
@@ -78,8 +77,7 @@ public class PhotoDownloader {
 		@Override
 		public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
 			if (attributes.getValue(TAG_SIZE) != null && attributes.getValue(TAG_SIZE).equals(TAG_CURR_SIZE) && currCountPhotos < COUNT_PHOTOS) {
-				currCountPhotos++;
-				URLs.add(attributes.getValue(TAG_HREF));
+				URLs[currCountPhotos++] = attributes.getValue(TAG_HREF);
 			}
 		}
 	}

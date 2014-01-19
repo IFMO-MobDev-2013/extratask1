@@ -8,9 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
-import java.awt.font.TextAttribute;
 import java.io.ByteArrayOutputStream;
-import java.util.ArrayList;
 
 public class ImagesDatabase  {
 
@@ -82,23 +80,24 @@ public class ImagesDatabase  {
 		}
 	}
 
-	public ArrayList<Bitmap> getImages() {
-		ArrayList<Bitmap> images = new ArrayList<Bitmap>();
+	public Bitmap[] getImages() {
+		Bitmap[] images = new Bitmap[PhotoDownloader.COUNT_PHOTOS];
 
 		Cursor cursor = database.query(DATABASE_NAME, null, null, null, null, null, null);
 		byte[] tData;
+		int i = 0;
 		while (cursor.moveToNext()) {
 			tData = cursor.getBlob(cursor.getColumnIndex(KEY_IMAGE));
-			images.add(BitmapFactory.decodeByteArray(tData, 0, tData.length));
+			images[i++] = BitmapFactory.decodeByteArray(tData, 0, tData.length);
 		}
-
+		if (i == 0) return null;
 		return images;
 	}
 
-	public void addImages(ArrayList<Bitmap> images) {
-		for (int i = 0; i < images.size(); i++) {
+	public void addImages(Bitmap[] images) {
+		for (int i = 0; i < images.length; i++) {
 			ByteArrayOutputStream out = new ByteArrayOutputStream();
-			images.get(i).compress(Bitmap.CompressFormat.PNG, 100, out);
+			images[i].compress(Bitmap.CompressFormat.PNG, 100, out);
 			ContentValues contentValues = new ContentValues();
 			contentValues.put(KEY_IMAGE_ID, i);
 			contentValues.put(KEY_IMAGE, out.toByteArray());

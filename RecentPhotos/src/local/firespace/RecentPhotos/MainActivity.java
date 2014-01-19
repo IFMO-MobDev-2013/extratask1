@@ -4,31 +4,17 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
-import android.graphics.Point;
-import android.media.Image;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.Display;
-import android.view.GestureDetector;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
-import android.widget.ImageView;
-import android.widget.TextView;
-
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.concurrent.ExecutionException;
 
 public class MainActivity extends Activity {
 
 	GridView gridView;
-	ArrayList<Bitmap> photos = new ArrayList<Bitmap>();
+	Bitmap[] photos;
 	DisplayMetrics metrics = new DisplayMetrics();
 	ImagesDatabase database;
 	ImageAdapter adapter;
@@ -67,7 +53,7 @@ public class MainActivity extends Activity {
 		try {
 			photos = new TaskManager().execute().get();
 			if (photos != null) {
-				Log.d("photos", "get photos from internet : " + photos.size());
+				Log.d("photos", "get photos from internet : " + photos.length);
 				database.reset();
 				database.addImages(photos);
 				adapter.updateImages(photos);
@@ -86,14 +72,27 @@ public class MainActivity extends Activity {
 
 		database = new ImagesDatabase(this);
 		database.open();
+		//database.reset();
 		photos = database.getImages();
 		adapter = new ImageAdapter(photos, this, metrics.widthPixels, getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT);
-		if (photos.isEmpty()) {
+		if (photos == null) {
 			Log.d("photos", "not photos on database");
 			downloadPhotos();
 		}
 		gridViewManage();
-		database.close();
 	}
 
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+		super.onConfigurationChanged(newConfig);
+		/*if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+			setContentView(R.layout.main_activity_layout_land);
+		} else {
+			setContentView(R.layout.main_activity);
+		}*/
+		setContentView(R.layout.main_activity);
+		gridView = (GridView) findViewById(R.id.gridview);
+		setScreenRes();
+		gridViewManage();
+	}
 }
