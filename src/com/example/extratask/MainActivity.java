@@ -86,6 +86,12 @@ public class MainActivity extends Activity implements AppResultsReceiver.Receive
         toast.show();
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        db.closeDB();
+    }
+
     public void refresh(View v) {
         startDownloading();
     }

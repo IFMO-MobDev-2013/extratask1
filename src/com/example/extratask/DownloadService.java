@@ -28,7 +28,7 @@ public class DownloadService extends IntentService {
 
     private static final String url = "http://api.flickr.com/services/rest/?" +
             "method=flickr.interestingness.getList&" +
-            "api_key=a5e90f753ad62a0f97eba79d831134e5&" +
+            "api_key=7a76fa7a100481edc0cd7852e6b8c3d3&" +
             "per_page=20&" +
             "format=json&nojsoncallback=1";
 
@@ -58,6 +58,8 @@ public class DownloadService extends IntentService {
         for (int i = 0; i < urls.size(); i++) {
             db.insertImage(getImage(urls.get(i)));
         }
+
+        db.closeDB();
 
         Bundle bundle = new Bundle();
         receiver.send(0, bundle);

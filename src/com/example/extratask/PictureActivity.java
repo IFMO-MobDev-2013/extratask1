@@ -6,11 +6,14 @@ import android.widget.ImageView;
 
 
 public class PictureActivity extends Activity {
+
+    private DataBase db;
+
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.picture);
 
-        DataBase db = new DataBase(getApplicationContext());
+        db = new DataBase(getApplicationContext());
 
         ImageView imageView = (ImageView) findViewById(R.id.imageView);
 
@@ -19,5 +22,11 @@ public class PictureActivity extends Activity {
         Image i = db.getImage(id);
 
         imageView.setImageBitmap(i.getBitmap());
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        db.closeDB();
     }
 }

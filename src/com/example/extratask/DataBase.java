@@ -109,4 +109,10 @@ public class DataBase extends SQLiteOpenHelper{
         Date date = new Date();
         return dateFormat.format(date);
     }
+
+    public void closeDB() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        if (db != null && db.isOpen())
+            db.close();
+    }
 }
