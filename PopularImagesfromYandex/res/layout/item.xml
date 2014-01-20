@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <Space
+            android:layout_width="fill_parent"
+            android:layout_height="10dp"
+            />
+    <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+        <Space android:layout_width="0dp" android:layout_height="fill_parent" android:layout_weight="10"
+               android:id="@+id/space"/>
+        <view android:layout_width="0dp"
+              android:layout_height="fill_parent"
+              class="com.ctd.Images.SuperImageView" android:id="@+id/view" android:layout_weight="35"
+              android:scaleType="fitXY"/>
+        <Space android:layout_width="0dp" android:layout_height="fill_parent" android:id="@+id/space2"
+               android:layout_weight="10"/>
+        <view class="com.ctd.Images.SuperImageView" android:layout_width="0dp"
+              android:layout_height="fill_parent" android:id="@+id/view2" android:layout_weight="35"
+              android:scaleType="fitXY"/>
+        <Space android:layout_width="0dp" android:layout_height="fill_parent" android:id="@+id/space3"
+               android:layout_weight="10"/>
+    </LinearLayout>
+    <Space android:layout_width="fill_parent" android:layout_height="10dp" android:id="@+id/space4"/>
+</LinearLayout>
