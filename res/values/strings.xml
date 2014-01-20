@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">BestPhoto</string>
+    <string name="url">http://api-fotki.yandex.ru/api/recent/</string>
+    <string name="refresh">Обновить</string>
+    <string name="nointernet">Отсутствует интернет соединение</string>
+    <string name="completed">Изображения загружены</string>
+    <string name="downloading">Загрузка...</string>
+</resources>
