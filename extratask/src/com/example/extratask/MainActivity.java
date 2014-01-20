@@ -34,10 +34,10 @@ import java.net.URL;
 
 public class MainActivity extends Activity {
 
-   // public static boolean database_empty = true;
+    public static boolean is_first = true;
     public static boolean is_land;
-    public static Bitmap[] bitmaps;
-    public static String[] full_size_bitmaps;
+    public static Bitmap[] bitmaps = new Bitmap[20];
+    public static String[] full_size_bitmaps = new String[20];
     public static int width;
     public static GridView gridView;
     public static Context context;
@@ -50,8 +50,8 @@ public class MainActivity extends Activity {
         context = getApplicationContext();
         is_land = (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE);
         setContentView(R.layout.main);
-        full_size_bitmaps = new String[20];
-        bitmaps = new Bitmap[20];
+     //   full_size_bitmaps = new String[20];
+      //  bitmaps = new Bitmap[20];
         gridView = (GridView) findViewById(R.id.gridView);
         Point size = new Point();
         Display display = getWindowManager().getDefaultDisplay();
@@ -70,7 +70,10 @@ public class MainActivity extends Activity {
             gridView.setPadding((int)(width * 0.1), (int)(width * 0.1), (int)(width * 0.1), (int)(width * 0.1));
         }
         if (checkInternetConnection()) {
-            new Downloader().execute();
+            if (is_first) {
+                new Downloader().execute();
+                is_first = false;
+            }
         }  else {
             Toast.makeText(this, getResources().getString(R.string.no_connection), Toast.LENGTH_LONG).show();
         }
@@ -115,6 +118,7 @@ public class MainActivity extends Activity {
             gridView.setHorizontalSpacing((int)(width * 0.1));
             gridView.setPadding((int)(width * 0.1), (int)(width * 0.1), (int)(width * 0.1), (int)(width * 0.1));
         }
+        setGridViewAdapter(bitmaps);
     }
 
     public static void setGridViewAdapter(Bitmap[] bitmaps) {
@@ -132,7 +136,7 @@ public class MainActivity extends Activity {
         return false;
     }
 
-    public class Downloader extends AsyncTask<Void, Void, Bitmap[]> {
+    public class Downloader extends AsyncTask<Void, Void, Void> {
 
         ProgressDialog dialog;
 
@@ -145,8 +149,8 @@ public class MainActivity extends Activity {
         }
 
         @Override
-        protected Bitmap[] doInBackground(Void... voids) {
-            Bitmap[] res = new Bitmap[20];
+        protected Void doInBackground(Void... voids) {
+          //  Bitmap[] res = new Bitmap[20];
             try {
                 String query = "http://api-fotki.yandex.ru/api/recent/";
                 URL url = new URL(query);
@@ -166,8 +170,8 @@ public class MainActivity extends Activity {
                     connection.setDoInput(true);
                     connection.connect();
                     InputStream input = connection.getInputStream();
-                    res[i] = BitmapFactory.decodeStream(input);
-
+                   // res[i] = BitmapFactory.decodeStream(input);
+                    MainActivity.bitmaps[i] = BitmapFactory.decodeStream(input);
 
                     Element el = (Element) childs.item(33);
                     int w = Integer.parseInt(el.getAttribute("width"));
@@ -199,16 +203,16 @@ public class MainActivity extends Activity {
             } catch (Exception e) {
                 return null;
             }
-            return res;
+            return null;
         }
 
         @Override
-        protected void onPostExecute(Bitmap[] bitmaps) {
+        protected void onPostExecute(Void bitmaps) {
             if (dialog != null) {
                 dialog.dismiss();
             }
-            MainActivity.setGridViewAdapter(bitmaps);
-            MainActivity.bitmaps =  bitmaps;
+            MainActivity.setGridViewAdapter(MainActivity.bitmaps);
+         //   MainActivity.bitmaps =  bitmaps;
         }
     }
 }
