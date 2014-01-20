@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Popular photos via Yandex.Fotki</string>
+    <string name="update">Tap to update</string>
+    <string name="startUpdateMsg">Updating started...</string>
+    <string name="sucUpdateMsg">Successfully updated</string>
+    <string name="startDownloadMsg">Downloading started...</string>
+    <string name="noInternetMsg">Updating error. Please, checkout your internet connection.</string>
+    <string name="dbIsNotOpened">Database isn\'t opened</string>
+</resources>
