@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">PictureViewer</string>
+    <string name="download">Downloading, please wait</string>
+    <string name="no_connection">No internet connection! Please enable connection and press the button "Refresh"</string>
+</resources>
