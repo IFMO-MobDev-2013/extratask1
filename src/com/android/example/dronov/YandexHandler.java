@@ -19,7 +19,7 @@ import java.util.List;
  */
 public class YandexHandler extends DefaultHandler {
     private static final int PICTURES_COUNT = 20;
-    private static final String PICTURES_SIZE = "M";
+    private static final String PICTURES_SIZE = "L";
     private List<Picture> list;
     private int count;
     @Override

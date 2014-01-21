@@ -9,9 +9,6 @@ import android.graphics.BitmapFactory;
 import com.android.example.dronov.Picture;
 
 import java.io.ByteArrayOutputStream;
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
-import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -89,14 +86,12 @@ public class YandexPhotos {
         return list;
     }
 
-    private int[] byteToInt(byte[] current) {
-        IntBuffer intBuffer = ByteBuffer.wrap(current).order(ByteOrder.BIG_ENDIAN).asIntBuffer();
-        int [] array = new int[intBuffer.remaining()];
-        intBuffer.get(array);
-        return array;
-    }
-
     public void deleteAllChannels() {
         mDB.delete(DB_TABLE, null, null);
+    }
+
+    public Bitmap getPicture(int index) {
+        ArrayList<Bitmap> arrayList = (ArrayList<Bitmap>) getAllPicturesData();
+        return arrayList.get(index);
     }
 }

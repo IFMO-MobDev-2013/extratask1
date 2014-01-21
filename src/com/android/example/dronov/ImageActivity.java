@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.widget.ImageView;
+import com.android.example.dronov.database.YandexPhotos;
 
 /**
  * Created with IntelliJ IDEA.
@@ -20,7 +21,11 @@ public class ImageActivity extends Activity {
         setContentView(R.layout.image_view);
 
         Intent intent = getIntent();
-        Bitmap bitmap = intent.getParcelableExtra("bitmap");
+        int index = intent.getIntExtra("bitmap", 0);
+        YandexPhotos database = new YandexPhotos(this);
+        database.open();
+        Bitmap bitmap = database.getPicture(index);
+        database.close();
         ImageView imageView = (ImageView) findViewById(R.id.imageView);
         imageView.setImageBitmap(bitmap);
     }

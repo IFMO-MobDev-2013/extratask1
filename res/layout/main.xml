@@ -4,17 +4,12 @@
         android:layout_height="fill_parent"
         xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/imageButton"
-            android:layout_gravity="right|center_vertical"/>
-
     <GridView xmlns:android="http://schemas.android.com/apk/res/android"
               android:id="@+id/grid_view"
               android:layout_width="fill_parent"
               android:layout_height="fill_parent"
               android:numColumns="auto_fit"
+              android:paddingTop="10dp"
               android:stretchMode="columnWidth"
               android:verticalSpacing="15dp" >
 

@@ -3,18 +3,16 @@ package com.android.example.dronov;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.FragmentTransaction;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.GridView;
-import android.widget.ImageButton;
-import android.widget.Toast;
+import android.view.ViewGroup;
+import android.widget.*;
 import com.android.example.dronov.database.YandexPhotos;
 
 import java.util.ArrayList;
@@ -32,7 +30,8 @@ public class MyActivity extends Activity implements ActionBar.TabListener {
     private boolean isPortraitOrientaion;
     private List<Bitmap> bitmapList, bitmapSmallImage = new ArrayList<Bitmap>();
     private YandexPhotos database;
-
+    private ProgressBar progressBar;
+    private ImageButton button;
     @SuppressWarnings("deprecation")
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -40,7 +39,22 @@ public class MyActivity extends Activity implements ActionBar.TabListener {
         setContentView(R.layout.main);
 
         isPortraitOrientaion = getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT;
+
+        LayoutInflater inflater = (LayoutInflater) getActionBar()
+                .getThemedContext().getSystemService(LAYOUT_INFLATER_SERVICE);
+        View customActionBarView = inflater.inflate(R.layout.actionbar_custom, null);
+
         ActionBar bar = getActionBar();
+
+        bar.setDisplayOptions(
+                ActionBar.DISPLAY_SHOW_CUSTOM,
+                ActionBar.DISPLAY_SHOW_CUSTOM | ActionBar.DISPLAY_HOME_AS_UP
+                        | ActionBar.DISPLAY_SHOW_TITLE);
+
+        bar.setCustomView(customActionBarView,
+                new ActionBar.LayoutParams(
+                        ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.MATCH_PARENT));
 
         DisplayMetrics dimension = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dimension);
@@ -48,12 +62,6 @@ public class MyActivity extends Activity implements ActionBar.TabListener {
         height = dimension.heightPixels;
 
 
-        bar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-
-        ActionBar.Tab tab = bar.newTab();
-        tab.setText("Яндекс.Фотки");
-        tab.setTabListener(this);
-        bar.addTab(tab);
 
         layout = (GridView) findViewById(R.id.grid_view);
         if (isPortraitOrientaion) {
@@ -84,7 +92,7 @@ public class MyActivity extends Activity implements ActionBar.TabListener {
 
         adapter = new GridViewAdapter(this, android.R.layout.simple_list_item_1, bitmapSmallImage);
         layout.setAdapter(adapter);
-        ImageButton button = (ImageButton) findViewById(R.id.imageButton);
+        button = (ImageButton) findViewById(R.id.imageButton);
         button.setImageResource(R.drawable.refresh);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -97,7 +105,7 @@ public class MyActivity extends Activity implements ActionBar.TabListener {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Intent intent = new Intent(view.getContext(), ImageActivity.class);
-                intent.putExtra("bitmap", bitmapList.get(i));
+                intent.putExtra("bitmap", i);
                 startActivity(intent);
             }
         });
@@ -105,16 +113,20 @@ public class MyActivity extends Activity implements ActionBar.TabListener {
     }
 
     private void loadImages() {
-        final ProgressDialog dialog = new ProgressDialog(this);
-        dialog.setMessage("Загружаем фотографии...");
-        dialog.setCancelable(false);
-        dialog.show();
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        progressBar.setVisibility(View.VISIBLE);
+        Toast toast = Toast.makeText(getApplicationContext(),
+                "Начинаем загрузку фотографий...",
+                Toast.LENGTH_LONG);
+        toast.setGravity(Gravity.CENTER, 0, 0);
+        toast.show();
+
+        button.setEnabled(false);
 
         database.deleteAllChannels();
         new PictureDownload() {
             @Override
             protected void onPostExecute(List<Picture> pictures) {
-                dialog.dismiss();
                 if (pictures.size() == 0) {
                     Toast toast = Toast.makeText(getApplicationContext(),
                             "Проблемы с интернет соединением.",
@@ -130,6 +142,14 @@ public class MyActivity extends Activity implements ActionBar.TabListener {
                 }
                 getSmallBitmap();
                 adapter.notifyDataSetChanged();
+                button.setEnabled(true);
+                progressBar.setVisibility(View.INVISIBLE);
+                Toast toast = Toast.makeText(getApplicationContext(),
+                        "Картинки успешно загружены и сохранены.",
+                        Toast.LENGTH_LONG);
+                toast.setGravity(Gravity.CENTER, 0, 0);
+                toast.show();
+
             }
         }.execute();
     }
