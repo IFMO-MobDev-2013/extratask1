@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="SilentTheme" parent="@android:style/Theme.Black.NoTitleBar">
+        <item name="android:windowBackground">@color/background</item>
+        <item name="android:buttonStyle">@style/SilentThemeButton</item>
+        <item name="android:textAppearance">@style/SilentThemeText</item>
+        <item name="android:editTextColor">@color/text</item>
+    </style>
+
+    <style name="SilentThemeButton" parent="@android:style/Widget.Button">
+        <item name="android:background">@drawable/button</item>
+        <item name="android:textColor">@color/text</item>
+    </style>
+
+    <style name="SilentThemeText" parent="@android:style/TextAppearance">
+        <item name="android:textColor">@color/text</item>
+    </style>
+</resources>
