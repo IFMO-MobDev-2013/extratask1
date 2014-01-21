@@ -122,7 +122,7 @@ public class MainActivity extends Activity {
     }
 
     public static void setGridViewAdapter(Bitmap[] bitmaps) {
-        gridView.setAdapter(new ImageAdapter(context, bitmaps, width, is_land));
+        gridView.setAdapter(new ImageAdapter(context, bitmaps, is_land ? height : width, is_land));
     }
 
     public boolean checkInternetConnection() {
