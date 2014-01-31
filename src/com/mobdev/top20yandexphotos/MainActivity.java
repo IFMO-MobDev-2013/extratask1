@@ -17,6 +17,8 @@ import android.graphics.Point;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Display;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -27,8 +29,10 @@ public class MainActivity extends Activity {
 	public static ArrayList<Bitmap> bitmaps;
 	private static boolean IS_STARTED_DOWNLOAD = false;
 	private static boolean IS_FINISHED_DOWNLOAD = false;
+	public static final String image_string = "IMAGE";
+	private static final String image_quality = "M";
+	private static final int image_num = 20;
 	private GridImageAdapter adapter;
-	private Button upd_btn;
 	private GridView grv;
 	int width;
 	
@@ -38,7 +42,7 @@ public class MainActivity extends Activity {
 			int i = src.length() - 1;
 			while (i >= 0) {
 				if (src.charAt(i) == '_') {
-					src = src.substring(0, i + 1) + "M";
+					src = src.substring(0, i + 1) + image_quality;
 					break;
 				}
 				i--;
@@ -59,7 +63,8 @@ public class MainActivity extends Activity {
 		@Override
 		protected ArrayList<Bitmap> doInBackground(Void... voids) {
 			try {
-				String query = "http://api-fotki.yandex.ru/api/recent/", result = "";
+				String query = getResources().getString(R.string.query);
+				String result = "";
 				URL url = new URL(query);
 				URLConnection connection = url.openConnection();
 				connection.setConnectTimeout(10000);
@@ -81,7 +86,7 @@ public class MainActivity extends Activity {
 							urls += c;
 						}
 						images.add(getBitmapFromURL(urls));
-						if (images.size() == 20) {
+						if (images.size() == image_num) {
 							break;
 						}
 					}
@@ -105,7 +110,6 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		grv = (GridView)findViewById(R.id.grv);
-		upd_btn = (Button)findViewById(R.id.upd_btn);
 		
 		Point size = new Point();		
 		Display display = getWindowManager().getDefaultDisplay();
@@ -113,32 +117,37 @@ public class MainActivity extends Activity {
 		width = size.x;
 		
 		updateGridView(bitmaps);
-		
-		upd_btn.setOnClickListener(new View.OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				new Downloader().execute();
-				Toast toast = Toast.makeText(getApplicationContext(), "Downloading...", Toast.LENGTH_LONG);
-				toast.show();
-				IS_STARTED_DOWNLOAD = true;
-				upd_btn.setClickable(false);
-			}
-		});
 	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getMenuInflater().inflate(R.menu.main, menu);
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		if (item.getItemId() == R.id.upd_btn) {
+			new Downloader().execute();
+			Toast toast = Toast.makeText(getApplicationContext(), getResources().getString(R.string.downloading), Toast.LENGTH_LONG);
+			toast.show();
+			IS_STARTED_DOWNLOAD = true;
+		}
+		return true;
+	}
+
 	public void updateGridView(ArrayList<Bitmap> bm) {
 		if (bm == null){
-			if (IS_STARTED_DOWNLOAD){
-				Toast toast = Toast.makeText(getApplicationContext(), "There is no Internet Connection", Toast.LENGTH_SHORT);
+			if (IS_STARTED_DOWNLOAD && IS_FINISHED_DOWNLOAD){
+				Toast toast = Toast.makeText(getApplicationContext(), getResources().getString(R.string.no_connection), Toast.LENGTH_SHORT);
 				toast.show();
-				upd_btn.setClickable(true);
 				IS_STARTED_DOWNLOAD = false;
 				IS_FINISHED_DOWNLOAD = false;
 			}
 		}
 		else{
 			if (IS_STARTED_DOWNLOAD && IS_FINISHED_DOWNLOAD){
-				Toast toast = Toast.makeText(getApplicationContext(), "Images have been downdoaded", Toast.LENGTH_SHORT);
+				Toast toast = Toast.makeText(getApplicationContext(), getResources().getString(R.string.finish_download), Toast.LENGTH_SHORT);
 				toast.show();
 				IS_STARTED_DOWNLOAD = false;
 				IS_FINISHED_DOWNLOAD = false;
@@ -147,12 +156,10 @@ public class MainActivity extends Activity {
 			bitmaps = bm;
 			adapter = new GridImageAdapter(getApplicationContext(), android.R.layout.simple_list_item_1, bitmaps, width, getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT);
 			grv.setAdapter(adapter);
-			upd_btn.setClickable(true);
-			upd_btn.setText(R.string.update_button_new);
 			grv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 				public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
 					Intent intent = new Intent(MainActivity.this, FullscreenImageActivity.class);
-					intent.putExtra("IMAGE", position);
+					intent.putExtra(MainActivity.image_string, position);
 					startActivity(intent);
 				}
 			});

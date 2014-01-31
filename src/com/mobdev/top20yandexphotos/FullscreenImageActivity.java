@@ -12,7 +12,7 @@ public class FullscreenImageActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.fullscreen_image);
 		Intent intent = getIntent();
-		Bitmap bitmap = MainActivity.bitmaps.get(intent.getIntExtra("IMAGE", 0));
+		Bitmap bitmap = MainActivity.bitmaps.get(intent.getIntExtra(MainActivity.image_string, 0));
 		ImageView img = (ImageView)findViewById(R.id.img);
 		img.setImageBitmap(bitmap);
 	}

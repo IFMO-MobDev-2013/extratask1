@@ -5,5 +5,9 @@
     <string name="action_settings">Settings</string>
     <string name="update_button">Show Top 20 Photos</string>
     <string name="update_button_new">Update Top 20 Photos</string>
+    <string name="downloading">Downloading...</string>
+    <string name="no_connection">There is no Internet Connection</string>
+    <string name="finish_download">Images have been downdoaded</string>
+    <string name="query">http://api-fotki.yandex.ru/api/recent/</string>
 
 </resources>
