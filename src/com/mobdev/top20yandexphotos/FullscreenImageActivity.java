@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.view.MotionEvent;
+import android.view.View;
 import android.widget.ImageView;
 
 public class FullscreenImageActivity extends Activity {
@@ -11,9 +13,8 @@ public class FullscreenImageActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.fullscreen_image);
-		Intent intent = getIntent();
-		Bitmap bitmap = MainActivity.bitmaps.get(intent.getIntExtra(MainActivity.image_string, 0));
-		ImageView img = (ImageView)findViewById(R.id.img);
-		img.setImageBitmap(bitmap);
+		((ImageView) findViewById(R.id.img))
+				.setImageBitmap(MainActivity.bitmaps.get(getIntent()
+						.getIntExtra(MainActivity.image_string, 0)));
 	}
 }
