@@ -1,5 +1,6 @@
 package com.mobdev.top20yandexphotos;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -9,8 +10,11 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Point;
@@ -33,7 +37,9 @@ public class MainActivity extends Activity {
 	private static final int image_num = 20;
 	private GridImageAdapter adapter;
 	private GridView grv;
-	int width;
+	private PhotosDB helper;
+	private SQLiteDatabase db;
+	private int width;
 	
 	private class Downloader extends AsyncTask<Void, Void, ArrayList<Bitmap>> {
 
@@ -100,7 +106,21 @@ public class MainActivity extends Activity {
 		@Override
 		protected void onPostExecute(ArrayList<Bitmap> result) {
 			IS_FINISHED_DOWNLOAD = true;
+			updateDB(result);
 			updateGridView(result);			
+		}
+	}
+	
+	private void updateDB(ArrayList<Bitmap> bm){
+		db.delete(PhotosDB.DATABASE_TABLE, null, null);
+		for (int i = 0; i< bm.size(); ++i){
+			Bitmap btm = bm.get(i);
+			ByteArrayOutputStream bos = new ByteArrayOutputStream();
+			btm.compress(Bitmap.CompressFormat.PNG, 100, bos);
+			byte[] bArray = bos.toByteArray();
+			ContentValues cv = new ContentValues();         
+			cv.put(PhotosDB.PHOTO, bArray); 
+			db.insert(PhotosDB.DATABASE_TABLE, null, cv);
 		}
 	}
 	
@@ -109,6 +129,20 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		grv = (GridView)findViewById(R.id.grv);
+		
+		helper = new PhotosDB(this);
+		db = helper.getWritableDatabase();
+		Cursor cursor = db.query(PhotosDB.DATABASE_TABLE, new String[] { PhotosDB.PHOTO }, null, null,
+				null, null, null);
+		if (cursor.getCount()!=0){
+			bitmaps = new ArrayList<Bitmap>();
+			cursor.moveToFirst();
+			do{
+				byte[] bArray = cursor.getBlob(cursor.getColumnIndex(PhotosDB.PHOTO));
+				Bitmap btm = BitmapFactory.decodeByteArray(bArray , 0, bArray.length);
+				bitmaps.add(btm);
+			} while (cursor.moveToNext());
+		}
 		
 		Point size = new Point();		
 		Display display = getWindowManager().getDefaultDisplay();
