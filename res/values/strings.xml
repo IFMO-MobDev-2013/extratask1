@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <string name="app_name">PopularPhotos</string>
-    <string name="but1">Download</string>
-    <string name="action_settings">Settings</string>
-    <string name="hello_world">Hello world!</string>
-
+    <string name="reload">Loading...</string>
+    <string name="internetConnectionError">Connection problem.</string>
+    <string name="databaseError">Database not found.</string>
+    <string name="reloadSuccess">Update complited.</string>
+    <string name="title">Top twenty.</string>
+    <string name="fatalError">Error. Please try to load photoes one more time.</string>
+    <string name="loadError">Data loading error.</string>
 </resources>
