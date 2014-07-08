@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Extra</string>
+    <string name="ya_fotki_url">http://api-fotki.yandex.ru/api/recent/</string>
+</resources>
